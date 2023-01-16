@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <script>
+        window.startQueue = Date.now()
         window.addEventListener("load", function (evt) {
             var output = document.getElementById("output");
             var input = document.getElementById("input");
@@ -34,7 +35,15 @@
                     ws = null;
                 }
                 ws.onmessage = function (evt) {
-                    print("RESPONSE: " + evt.data);
+                    //print("RESPONSE: " + evt.data);
+                    if (evt.data.indexOf("Start") != -1) {
+                        window.startQueue = Date.now()
+                        print("START QUEUE: " + window.startQueue)
+                    }
+                    if (evt.data.indexOf("Completed") != -1) {
+                        print("RESPONSE: " + evt.data)
+                        print(`DONE QUEUE:  ${Date.now() - window.startQueue}`)
+                    }
                 }
                 ws.onerror = function (evt) {
                     print("ERROR: " + evt.data);

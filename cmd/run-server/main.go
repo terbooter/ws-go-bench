@@ -42,8 +42,14 @@ func echo(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		log.Printf("recv: %s", message)
+
 		start := time.Now()
-		for i := 0; i < 10000; i++ {
+		err = c.WriteMessage(mt, []byte("Start"))
+		if err != nil {
+			log.Println("write:", err)
+			break
+		}
+		for i := 0; i < 100000; i++ {
 			err = c.WriteMessage(mt, []byte("message : "+strconv.Itoa(i)))
 			if err != nil {
 				log.Println("write:", err)
